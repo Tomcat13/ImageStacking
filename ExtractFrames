@@ -1,0 +1,15 @@
+import cv2
+
+# RedStarVid.mov was the live photo I took of Ursa Major
+vid = cv2.VideoCapture('RedStarVid.mov')
+
+#I could have added a place to put path... but that's for another day
+def extract_frames(video):
+    count = 0
+    success = True
+    while success:
+        success,frame = video.read()
+        cv2.imwrite("frame%d.jpg" % count, frame)
+        count += 1
+
+#extract_frames(vid)
