@@ -1,4 +1,10 @@
 # ImageStacking
+How to Use:
+If you have a video, use the ExtractFrames.py file to get individual frames from the video.
+Once individual frames are available, CenterLocation.py finds the centerpoint of the object being observed, in pixels, and returns an array of those x and y coordinates along with another pair of arrays which shows the change in x and y coordinates from the inital frame.
+
+
+Background:
 Recording some of my python code I'm using to stack images I take from my telescope
 
 I'm about to start my graduate degree in Applied Data Science, and I'm doing this to improve some of my comp sci skills.
