@@ -1,0 +1,23 @@
+import cv2
+import glob
+import numpy as np
+
+def frameArray():
+    frames = glob.glob("StarFrames2/*.jpg")
+
+    x = []  # x coordinate of middle spot
+    y = []  # y coordinate of middle spot
+    for frame in frames:
+        img = cv2.imread(frame)
+        gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        ret, thresh = cv2.threshold(gray_image, 127, 255, 0)
+        M = cv2.moments(thresh)
+        cX = int(M['m10'] / M['m00'])
+        cY = int(M['m01'] / M['m00'])
+        x.append(cX)
+        y.append(cY)
+
+    # finds difference from initial position
+    x1 = np.subtract(x, x[0])
+    y1 = np.subtract(y, y[0])
+    return x, y, x1, y1
