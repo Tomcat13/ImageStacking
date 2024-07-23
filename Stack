@@ -1,0 +1,45 @@
+# Got averaging code from LESLIE'S BLOG 2020-06-28
+
+import cv2
+import numpy as np
+import glob
+import matplotlib.pyplot as plt
+
+#gets all the frames
+frames = glob.glob("StarFrames2/*.jpg")
+
+#count will be used to iterate the pixel translation values
+frame_data = []
+count = 0
+
+#I manually put these here, but you could create these variable from function made in CenterLocation or FrameLoop
+x=[0,-2,-5,-7,-9,0,0]
+y=[0,-4,-5,-16,-13,3,3]
+
+for frame in frames:
+    this_frame = cv2.imread(frame,1)
+
+    #translate image so stacking can be done
+    num_rows, num_cols = this_frame.shape[:2]
+    translation_matrix = np.float32([ [1,0,-x[count]], [0,1,-y[count]] ])
+    frame_translation = cv2.warpAffine(this_frame, translation_matrix, (num_cols,num_rows))
+    frame_data.append(frame_translation)
+    count = count + 1
+
+    #frame_data.append(this_frame)
+
+
+avg_frame = frame_data[0]
+for i in range(len(frame_data)):
+    if i == 0:
+        pass
+    else:
+        alpha = 1.0/(i + 1)
+        beta = 1.0 - alpha
+        avg_frame = cv2.addWeighted(frame_data[i], alpha, avg_frame, beta, 0.0)
+
+cv2.imwrite('stacked_star.jpeg', avg_frame)
+avg_frame = cv2.imread('stacked_star.jpeg')
+plt.imshow(avg_frame)
+plt.setp(plt.gcf().get_axes(), xticks=[], yticks=[]);
+plt.show()
